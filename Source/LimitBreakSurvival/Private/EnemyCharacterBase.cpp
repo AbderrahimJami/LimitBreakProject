@@ -9,6 +9,15 @@ AEnemyCharacterBase::AEnemyCharacterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	StaticMesh = CreateOptionalDefaultSubobject<UStaticMeshComponent>(TEXT("Temporary Static Mesh"));
+	StaticMesh->SetupAttachment(RootComponent);
+}
+
+void AEnemyCharacterBase::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	OutLocation = GetMesh()->GetSocketLocation("HeadSocket");
+	OutRotation = GetMesh()->GetSocketRotation("HeadSocket");
+	
 }
 
 // Called when the game starts or when spawned

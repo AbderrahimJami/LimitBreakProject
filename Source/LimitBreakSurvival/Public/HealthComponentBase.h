@@ -39,8 +39,15 @@ public:
 	Applies gradual damage over a set duration
 	 */
 	UFUNCTION(BlueprintCallable, Category="Health")
-	void ApplyHealthOverTime(float DamagePerSecond, float Duration);
+	void ApplyHealthOverTime(float HealthPerSecond, float Duration);
 
+	/*
+	Applies gradual damage over a set duration
+	 */
+	UFUNCTION(BlueprintCallable, Category="Health")
+	void ApplyDamageOverTime(float DamagePerSecond, float Duration);
+
+	
 	/*
 	 Resets current health to the maximum value, useful for respawns or healing events
 	 */
@@ -84,7 +91,13 @@ public:
 	
 private:
 	bool isDead = false;
-	FTimerDelegate timerDelegate;
-	FTimerHandle Timer;
+	FTimerDelegate healthTimerDelegate;
+	FTimerHandle healthTimer;
+
+	FTimerDelegate damageTimerDelegate;
+	FTimerHandle damageTimer;
+
+	
+	
 
 };

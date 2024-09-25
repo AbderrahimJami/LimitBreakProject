@@ -3,6 +3,8 @@
 
 #include "HealthComponentBase.h"
 
+#include "Editor.h"
+
 // Sets default values for this component's properties
 UHealthComponentBase::UHealthComponentBase()
 {
@@ -40,28 +42,48 @@ void UHealthComponentBase::TakeDamage(float damageAmount)
 	
 	CurrentHealth -= damageAmount;
 	//Check if there's an active timer 
-	
-	//Letting code know health changed
-	OnHealthChanged.Broadcast(CurrentHealth);
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::MakeRandomColor(),
+	FString::Printf(TEXT("Health is now: %f"), CurrentHealth));
 	if (CurrentHealth <= 0)
 	{
 		isDead = true;
 		//Letting rest of the code know the Owning Actor's dead now 
 		OnDeath.Broadcast();
+
+		//Check if there's damage is being applied over time
+		if (damageTimer.IsValid())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(damageTimer);
+		}
 	}
+	//Letting code know health changed
+	OnHealthChanged.Broadcast(CurrentHealth);
 	
 }
 
-void UHealthComponentBase::ApplyHealthOverTime(float DamagePerSecond, float Duration)
+void UHealthComponentBase::ApplyHealthOverTime(float HealthPerSecond, float Duration)
 {
-	timerDelegate.BindUFunction(this, FName("Heal"), DamagePerSecond);
+	healthTimerDelegate.BindUFunction(this, FName("Heal"), HealthPerSecond);
 	FTimerHandle durationTimer;
-	GetWorld()->GetTimerManager().SetTimer(Timer, timerDelegate, 1.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(healthTimer, healthTimerDelegate, 1.0f, true);
 	GetWorld()->GetTimerManager().SetTimer(durationTimer, FTimerDelegate::CreateLambda([&]
 	{
-		GetWorld()->GetTimerManager().ClearTimer(Timer);
+		GetWorld()->GetTimerManager().ClearTimer(healthTimer);
 
 	}), Duration, false);
+	
+}
+
+void UHealthComponentBase::ApplyDamageOverTime(float DamagePerSecond, float Duration)
+{
+	damageTimerDelegate.BindUFunction(this, FName("TakeDamage"), DamagePerSecond);
+	FTimerHandle durationTimer;
+	GetWorld()->GetTimerManager().SetTimer(damageTimer, damageTimerDelegate, 1.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(durationTimer, FTimerDelegate::CreateLambda([&]
+	{
+		GetWorld()->GetTimerManager().ClearTimer(damageTimer);
+	}), Duration, false);
+
 	
 }
 

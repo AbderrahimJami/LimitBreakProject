@@ -10,7 +10,9 @@ UHealthComponentBase::UHealthComponentBase()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 	
-	
+	CurrentHealth = 0.f;
+	MaxHealth = 100.f;
+	bMaxHealthSetOnStart = false;
 
 	
 
@@ -60,6 +62,17 @@ void UHealthComponentBase::ApplyHealthOverTime(float DamagePerSecond, float Dura
 		GetWorld()->GetTimerManager().ClearTimer(Timer);
 
 	}), Duration, false);
+	
+}
+
+void UHealthComponentBase::RestoreToMaxHealth()
+{
+	if (CurrentHealth >= MaxHealth) return;
+	if (CurrentHealth <= 0)
+		OnRevive.Broadcast();
+	
+	CurrentHealth = MaxHealth;
+	OnHealthChanged.Broadcast(CurrentHealth);
 	
 }
 

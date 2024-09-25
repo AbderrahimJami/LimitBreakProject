@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, newHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRevive);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable )
 class LIMITBREAKSURVIVAL_API UHealthComponentBase : public UActorComponent
 {
@@ -39,6 +40,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Health")
 	void ApplyHealthOverTime(float DamagePerSecond, float Duration);
+
+	/*
+	 Resets current health to the maximum value, useful for respawns or healing events
+	 */
+	UFUNCTION(BlueprintCallable, Category="Health")
+	void RestoreToMaxHealth();
 	
 	
 protected:
@@ -56,13 +63,10 @@ public:
 	when the character is defeated
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true", ExposeOnSpawn = true))
-	float CurrentHealth = 0.f;
+	float CurrentHealth;
 
-
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true", ExposeOnSpawn = true))
-	float MaxHealth = 100.f;
-
+	float MaxHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true", ExposeOnSpawn = true))
 	bool bMaxHealthSetOnStart;
@@ -74,6 +78,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Health Events")
 	FOnDeath OnDeath;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health Events")
+	FOnRevive OnRevive;
 	
 private:
 	bool isDead = false;

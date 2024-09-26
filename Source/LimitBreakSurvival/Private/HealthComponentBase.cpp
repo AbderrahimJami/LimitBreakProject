@@ -42,8 +42,6 @@ void UHealthComponentBase::TakeDamage(float damageAmount)
 	
 	CurrentHealth -= damageAmount;
 	//Check if there's an active timer 
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::MakeRandomColor(),
-	FString::Printf(TEXT("Health is now: %f"), CurrentHealth));
 	if (CurrentHealth <= 0)
 	{
 		isDead = true;
@@ -104,6 +102,9 @@ void UHealthComponentBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (bMaxHealthSetOnStart)
+		CurrentHealth = MaxHealth;
+	
 	// ...
 	
 }

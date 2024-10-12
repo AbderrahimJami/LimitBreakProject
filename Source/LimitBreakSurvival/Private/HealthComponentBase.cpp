@@ -23,11 +23,12 @@ UHealthComponentBase::UHealthComponentBase()
 
 void UHealthComponentBase::Heal(float healAmount)
 {
-	if (CurrentHealth == healAmount) return;
+	if (CurrentHealth == MaxHealth) return;
 	CurrentHealth += healAmount;
-	if (CurrentHealth >= MaxHealth)
+	if (CurrentHealth > MaxHealth)
 		CurrentHealth = MaxHealth;
 	//Broadcast Health Change
+	//Pass Old Health as well 
 	OnHealthChanged.Broadcast(CurrentHealth);
 
 }

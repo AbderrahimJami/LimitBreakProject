@@ -5,12 +5,12 @@
 
 void UPlayerStateBase::EnterState_Implementation(ACharacter* player)
 {
-	GEngine->AddOnScreenDebugMessage(-2, 3, FColor::MakeRandomColor(), "Entering State");
+	// GEngine->AddOnScreenDebugMessage(-2, 3, FColor::MakeRandomColor(), "Entering State");
 }
 
 void UPlayerStateBase::ExitState_Implementation(ACharacter* player)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Exiting State");
+	// GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Exiting State");
 }
 
 void UPlayerStateBase::Tick_Implementation(ACharacter* player, float DeltaSeconds)

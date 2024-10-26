@@ -37,7 +37,7 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D MoveInput = Value.Get<FVector2D>();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Movement: %f", MoveInput.X));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Player Movement: %f"), MoveInput.X));
 	
 }
 

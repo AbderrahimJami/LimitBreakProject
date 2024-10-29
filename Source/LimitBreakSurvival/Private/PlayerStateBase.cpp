@@ -33,11 +33,8 @@ void UPlayerStateBase::EnterState_Implementation(ACharacter* player)
 
 void UPlayerStateBase::ExitState_Implementation(ACharacter* Player)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Exiting State");
 	//Unbind all callback functions from OnMoveEvent Delegate
-	// int sdfjsdkjlf = 23;
 	PlayerControllerRef->GetMoveDelegate()->RemoveAll(this);
-	
 }
 
 

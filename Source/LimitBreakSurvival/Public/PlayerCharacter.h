@@ -8,9 +8,13 @@
 
 #include "PlayerCharacter.generated.h"
 
+class UStateManagerComponent;
 class UInputAction;
 class UInputMappingContext;
 class UHealthComponentBase;
+class UPlayerStateBase;
+class UIdleState;
+class UWalkingState;
 
 UCLASS()
 class LIMITBREAKSURVIVAL_API APlayerCharacter : public ACharacter
@@ -35,13 +39,22 @@ protected:
 	
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;	
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthComponentBase* HealthComp;
+	UPROPERTY(visibleAnywhere, BlueprintReadOnly, Category = Input)
+	FVector2D MoveInput;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Finite State Machine")
+	UStateManagerComponent* StateManager;
 	
+private:
+	UPlayerStateBase* PlayerState;
+	UIdleState* IdleState;
+	UWalkingState* WalkingState;
 };

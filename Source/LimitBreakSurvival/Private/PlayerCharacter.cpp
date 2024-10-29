@@ -7,6 +7,7 @@
 #include "HealthComponentBase.h"
 #include "Components/InputComponent.h"
 #include "HealthComponentBase.h"
+#include "StateManagerComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -14,7 +15,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	StateManager = CreateDefaultSubobject<UStateManagerComponent>(TEXT("StateManager"));
 	HealthComp = CreateDefaultSubobject<UHealthComponentBase>(TEXT("HealthComp"));
 }
 
@@ -23,15 +24,8 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Adding mapping context to detect input from associated mapping context chosen
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
-	{
-		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(PlayerMappingContext, 0);
-		}
-		
-	}
+	StateManager->InitStateManager();
+	
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)

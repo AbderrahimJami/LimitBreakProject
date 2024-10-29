@@ -16,14 +16,14 @@ class LIMITBREAKSURVIVAL_API UWalkingState : public UPlayerStateBase
 
 	
 public:
-	void EnterState(ACharacter* player){}
-	virtual void EnterState_Implementation(ACharacter* player) override;
+	void EnterState(ACharacter* Player){}
+	virtual void EnterState_Implementation(ACharacter* Player) override;
 
-	void ExitState(ACharacter* player);
-	virtual void ExitState_Implementation(ACharacter* player) override;
+	void ExitState(ACharacter* Player);
+	virtual void ExitState_Implementation(ACharacter* Player) override;
 
-	void Tick(ACharacter* player, float DeltaSeconds);
-	virtual void Tick_Implementation(ACharacter* player, float DeltaSeconds) override;
+	void Tick(ACharacter* Player, float DeltaSeconds);
+	virtual void Tick_Implementation(ACharacter* Player, float DeltaSeconds) override;
 
 	
 };

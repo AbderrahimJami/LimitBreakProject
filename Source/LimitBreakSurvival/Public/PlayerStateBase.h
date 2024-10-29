@@ -9,6 +9,9 @@
 
 //Forward Declare PlayerCharacter
 
+class IPlayerControllerInterface;
+class APlayerCharacter;
+
 UCLASS(Blueprintable, BlueprintType)
 class LIMITBREAKSURVIVAL_API UPlayerStateBase : public UObject
 {
@@ -16,16 +19,34 @@ class LIMITBREAKSURVIVAL_API UPlayerStateBase : public UObject
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PlayerState", meta = (DefaultToSelf = "player"))
 	void EnterState(ACharacter* player);
+	
+	UFUNCTION()
+	virtual void OnMoveAction(FVector MoveInput);
+	
 	virtual void EnterState_Implementation(ACharacter* player);
+	
+	
 
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PlayerState", meta = (DefaultToSelf = "player"))
-	void ExitState(ACharacter* player);
-	virtual void ExitState_Implementation(ACharacter* player);
+	void ExitState(ACharacter* Player);
+	virtual void ExitState_Implementation(ACharacter* Player);
 
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PlayerState", meta = (DefaultToSelf = "player"))
 	void Tick(ACharacter* player, float DeltaSeconds);
 	virtual void Tick_Implementation(ACharacter* player, float DeltaSeconds);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerState")
+	bool bCanRepeat = false;
+	
+	UPROPERTY(BlueprintReadWrite)
+	APlayerCharacter* PlayerCharacterRef = nullptr;
+
+
+	
+	IPlayerControllerInterface* PlayerControllerRef = nullptr;
+	
 	
 };

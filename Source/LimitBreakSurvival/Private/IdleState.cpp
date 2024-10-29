@@ -12,17 +12,6 @@ void UIdleState::EnterState(ACharacter* player)
 
 void UIdleState::EnterState_Implementation(ACharacter* player)
 {
-	Super::EnterState_Implementation(player);
-	
-	auto controller = Cast<ACharacter>(player)->GetController();
-	if (controller)
-	{
-		auto playerController = Cast<APlayerController>(controller);
-		if (playerController)
-		{
-			
-		}
-	}
 }
 
 void UIdleState::ExitState(ACharacter* player)

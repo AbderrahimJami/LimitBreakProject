@@ -8,29 +8,33 @@
 void UIdleState::EnterState(ACharacter* player)
 {
 	Super::EnterState(player);
+	
 }
 
-void UIdleState::EnterState_Implementation(ACharacter* player)
+void UIdleState::EnterState_Implementation(ACharacter* Player)
 {
+	Super::EnterState_Implementation(Player);
 }
 
-void UIdleState::ExitState(ACharacter* player)
+void UIdleState::ExitState(ACharacter* Player)
 {
-	Super::ExitState(player);
+	Super::ExitState(Player);
 }
 
-void UIdleState::ExitState_Implementation(ACharacter* player)
+void UIdleState::ExitState_Implementation(ACharacter* Player)
 {
-	Super::ExitState_Implementation(player);
+	Super::ExitState_Implementation(Player);
 }
 
-void UIdleState::Tick(ACharacter* player, float DeltaSeconds)
+void UIdleState::Tick(ACharacter* Player, const float DeltaSeconds)
 {
-	Super::Tick(player, DeltaSeconds);
+	Super::Tick(Player, DeltaSeconds);
 
 }
 
-void UIdleState::Tick_Implementation(ACharacter* player, float DeltaSeconds)
+void UIdleState::Tick_Implementation(ACharacter* Player, float DeltaSeconds)
 {
-	Super::Tick_Implementation(player, DeltaSeconds);
+	Super::Tick_Implementation(Player, DeltaSeconds);
+
+	
 }

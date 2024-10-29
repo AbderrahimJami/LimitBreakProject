@@ -25,6 +25,10 @@ public:
 	void Tick(ACharacter* Player, float DeltaSeconds);
 	virtual void Tick_Implementation(ACharacter* Player, float DeltaSeconds) override;
 
-	
-	
+protected:
+	virtual void OnMoveAction(FVector MoveInput) override;
+
+
+private:
+	FTimerHandle Timer;
 };

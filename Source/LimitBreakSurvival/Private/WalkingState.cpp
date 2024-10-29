@@ -5,27 +5,33 @@
 
 
 
-void UWalkingState::EnterState_Implementation(ACharacter* player)
+void UWalkingState::EnterState_Implementation(ACharacter* Player)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "WalkingState::EnterState_Implementation");
+	Super::EnterState_Implementation(Player);
+
 }
 
-void UWalkingState::ExitState(ACharacter* player)
+void UWalkingState::ExitState(ACharacter* Player)
 {
-	Super::ExitState(player);
+	Super::ExitState(Player);
 }
 
-void UWalkingState::ExitState_Implementation(ACharacter* player)
+void UWalkingState::ExitState_Implementation(ACharacter* Player)
 {
-	Super::ExitState_Implementation(player);
+	Super::ExitState_Implementation(Player);
 }
 
-void UWalkingState::Tick(ACharacter* player, float DeltaSeconds)
+void UWalkingState::Tick(ACharacter* Player, const float DeltaSeconds)
 {
-	Super::Tick(player, DeltaSeconds);
+	Super::Tick(Player, DeltaSeconds);
 }
 
-void UWalkingState::Tick_Implementation(ACharacter* player, float DeltaSeconds)
+void UWalkingState::Tick_Implementation(ACharacter* Player, float DeltaSeconds)
 {
-	Super::Tick_Implementation(player, DeltaSeconds);
+	Super::Tick_Implementation(Player, DeltaSeconds);
+}
+
+void UWalkingState::OnMoveAction(FVector MoveInput)
+{
+	Super::OnMoveAction(MoveInput);
 }

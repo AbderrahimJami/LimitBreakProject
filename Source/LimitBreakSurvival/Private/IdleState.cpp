@@ -3,6 +3,8 @@
 
 #include "IdleState.h"
 
+#include "PlayerCharacter.h"
+#include "StateManagerComponent.h"
 #include "GameFramework/Character.h"
 
 void UIdleState::EnterState(ACharacter* player)
@@ -38,3 +40,16 @@ void UIdleState::Tick_Implementation(ACharacter* Player, float DeltaSeconds)
 
 	
 }
+
+void UIdleState::OnMoveAction(FVector MoveInput)
+{
+	Super::OnMoveAction(MoveInput);
+	//Change state
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Move Action from IdleState");
+
+	PlayerCharacterRef->StateManager->SwitchStateByKey("Walk");
+
+}
+
+
+

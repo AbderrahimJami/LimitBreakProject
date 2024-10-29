@@ -4,6 +4,7 @@
 #include "WalkingState.h"
 
 #include "PlayerCharacter.h"
+#include "StateManagerComponent.h"
 
 
 void UWalkingState::EnterState_Implementation(ACharacter* Player)
@@ -35,6 +36,10 @@ void UWalkingState::Tick_Implementation(ACharacter* Player, float DeltaSeconds)
 void UWalkingState::OnMoveAction(FVector MoveInput)
 {
 	Super::OnMoveAction(MoveInput);
+	if (MoveInput.IsZero())
+	{
+		PlayerCharacterRef->StateManager->SwitchStateByKey("Idle");
+	}
 	PlayerCharacterRef->AddMovementInput(PlayerCharacterRef->GetActorRightVector(), MoveInput.X);
 	PlayerCharacterRef->AddMovementInput(PlayerCharacterRef->GetActorForwardVector(), MoveInput.Y);
 }

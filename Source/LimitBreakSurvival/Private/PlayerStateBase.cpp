@@ -3,15 +3,45 @@
 
 #include "PlayerStateBase.h"
 
-void UPlayerStateBase::EnterState_Implementation(ACharacter* player)
+#include "PlayerCharacter.h"
+#include "PlayerControllerInterface.h"
+#include "Kismet/GameplayStatics.h"
+
+void UPlayerStateBase::OnMoveAction(FVector MoveInput)
 {
-	// GEngine->AddOnScreenDebugMessage(-2, 3, FColor::MakeRandomColor(), "Entering State");
+	//Handle OnMoveAction Event triggered
 }
 
-void UPlayerStateBase::ExitState_Implementation(ACharacter* player)
+void UPlayerStateBase::EnterState_Implementation(ACharacter* player)
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Exiting State");
+	if (!PlayerCharacterRef)
+	{
+		PlayerCharacterRef = CastChecked<APlayerCharacter>(player);
+	}
+
+	//Bind Input Delegates
+	//Cache PlayerController
+	if (!PlayerControllerRef)
+	{
+		//Interpret the Playercontroller as if it's an interface
+		PlayerControllerRef = CastChecked<IPlayerControllerInterface>(UGameplayStatics::GetPlayerController(this, 0));
+		//Bind Functions
+	}
+	PlayerControllerRef->GetMoveDelegate()->AddUObject(this, &UPlayerStateBase::OnMoveAction);
+	
+}	
+
+void UPlayerStateBase::ExitState_Implementation(ACharacter* Player)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Exiting State");
+	//Unbind all callback functions from OnMoveEvent Delegate
+	// int sdfjsdkjlf = 23;
+	PlayerControllerRef->GetMoveDelegate()->RemoveAll(this);
+	
 }
+
+
+
 
 void UPlayerStateBase::Tick_Implementation(ACharacter* player, float DeltaSeconds)
 {

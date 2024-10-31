@@ -36,6 +36,10 @@ void ACustomPlayerController::SetupInputComponent()
 	{
 		EnhancedInputComponent->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::OnMoveInputAction);
 		EnhancedInputComponent->BindAction(MoveInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnMoveInputAction);
+		
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::Aim);
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::Aim);
+		
 	}
 	
 }
@@ -43,4 +47,10 @@ void ACustomPlayerController::SetupInputComponent()
 FMoveSignature* ACustomPlayerController::GetMoveDelegate()
 {
 	return &OnMoveInputEvent;
+}
+void ACustomPlayerController::Aim(const FInputActionValue& Value)
+{
+	FVector MouseInput = Value.Get<FVector>();
+	GetPawn()->AddControllerYawInput(MouseInput.X);
+	GetPawn()->AddControllerPitchInput(MouseInput.Y * -1);
 }

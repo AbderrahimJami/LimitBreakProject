@@ -42,6 +42,9 @@ protected:
 	virtual FAimSignature* GetAimDelegate() override;
 
 private:
+
+	void Aim(const FInputActionValue& Value);
+	
 	FMoveSignature OnMoveInputEvent;
 	FAimSignature OnAimInputEvent;
 

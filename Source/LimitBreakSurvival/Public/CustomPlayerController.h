@@ -18,7 +18,6 @@ class LIMITBREAKSURVIVAL_API ACustomPlayerController : public APlayerController,
 {
 	GENERATED_BODY()
 
-	void OnMoveInputAction(const FInputActionValue& Value);
 public:
 	virtual void BeginPlay() override;
 	virtual  void SetupInputComponent() override;

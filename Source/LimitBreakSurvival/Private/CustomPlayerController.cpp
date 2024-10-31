@@ -17,6 +17,15 @@ void ACustomPlayerController::OnMoveInputAction(const FInputActionValue& Value)
 	}
 }
 
+void ACustomPlayerController::OnAimInputAction(const FInputActionValue& Value)
+{
+	FVector AimInput = Value.Get<FVector>();
+	if (OnMoveInputEvent.IsBound())
+	{
+		OnMoveInputEvent.Broadcast(AimInput);
+	}
+}
+
 void ACustomPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -40,6 +49,8 @@ void ACustomPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::Aim);
 		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::Aim);
 		
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
 	}
 	
 }
@@ -48,6 +59,12 @@ FMoveSignature* ACustomPlayerController::GetMoveDelegate()
 {
 	return &OnMoveInputEvent;
 }
+
+FAimSignature* ACustomPlayerController::GetAimDelegate()
+{
+	return &OnAimInputEvent;
+}
+
 void ACustomPlayerController::Aim(const FInputActionValue& Value)
 {
 	FVector MouseInput = Value.Get<FVector>();

@@ -9,6 +9,7 @@
 
 //Delegate types declarations
 DECLARE_MULTICAST_DELEGATE_OneParam(FMoveSignature, FVector);
+DECLARE_MULTICAST_DELEGATE_OneParam(FAimSignature, FVector);
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -27,6 +28,10 @@ class LIMITBREAKSURVIVAL_API IPlayerControllerInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
+
+	//Triggers callback functions tied to the Move Action.	
 	virtual FMoveSignature* GetMoveDelegate() = 0;
+
+	virtual FAimSignature* GetAimDelegate() = 0;
 	
 };

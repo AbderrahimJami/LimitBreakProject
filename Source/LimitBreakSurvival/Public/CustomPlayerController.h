@@ -23,7 +23,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual  void SetupInputComponent() override;
 
-
+	void OnMoveInputAction(const FInputActionValue& Value);
+	void OnAimInputAction(const FInputActionValue& Value);
 	//Delegates
 
 protected:
@@ -38,8 +39,11 @@ protected:
 	
 	virtual FMoveSignature* GetMoveDelegate() override;
 
+	virtual FAimSignature* GetAimDelegate() override;
+
 private:
 	FMoveSignature OnMoveInputEvent;
+	FAimSignature OnAimInputEvent;
 
 	
 };

@@ -76,3 +76,5 @@ DerivedDataCache/*
 
 # JetBrains Rider
 .idea/
+*.DotSettings.user
+*.DotSettings.user

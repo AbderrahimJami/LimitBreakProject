@@ -28,6 +28,8 @@ public:
 protected:
 	virtual void OnMoveAction(FVector MoveInput) override;
 
+public:
+	virtual void OnInteractAction_Implementation() override;
 
 private:
 	FTimerHandle Timer;

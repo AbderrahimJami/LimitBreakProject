@@ -51,5 +51,14 @@ void UIdleState::OnMoveAction(FVector MoveInput)
 
 }
 
+void UIdleState::OnInteractAction_Implementation()
+{
+	Super::OnInteractAction_Implementation();
+	
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Interact Action from IdleState");
+}
+
+
+
 
 

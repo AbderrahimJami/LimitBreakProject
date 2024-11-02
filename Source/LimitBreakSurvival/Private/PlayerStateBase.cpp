@@ -17,9 +17,10 @@ void UPlayerStateBase::OnAimAction(FVector AimInput)
 	//Handle OnAimAction Event triggered
 }
 
-void UPlayerStateBase::OnInteractAction()
+
+void UPlayerStateBase::OnInteractAction_Implementation()
 {
-	//Handle OnInputAction Event triggered
+	
 }
 
 void UPlayerStateBase::EnterState_Implementation(ACharacter* player)

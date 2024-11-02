@@ -34,5 +34,8 @@ public:
 	virtual FMoveSignature* GetMoveDelegate() = 0;
 
 	virtual FAimSignature* GetAimDelegate() = 0;
+
+	//Getter to get Delegate used by listening states to bind their callback functions
+	virtual FInteractSignature* GetInteractDelegate() = 0;
 	
 };

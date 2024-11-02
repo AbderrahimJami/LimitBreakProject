@@ -40,6 +40,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	const UInputAction* InteractInputAction = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
+	float CameraPitchLimit = 80.0f;
 
 	
 	virtual FMoveSignature* GetMoveDelegate() override;

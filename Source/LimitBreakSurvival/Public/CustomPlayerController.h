@@ -35,6 +35,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	const UInputAction* AimInputAction = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	const UInputAction* InteractInputAction = nullptr;
+
+
 	
 	virtual FMoveSignature* GetMoveDelegate() override;
 

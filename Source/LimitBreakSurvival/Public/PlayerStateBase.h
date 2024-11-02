@@ -23,8 +23,9 @@ public:
 	UFUNCTION()
 	virtual void OnMoveAction(FVector MoveInput);
 	virtual void OnAimAction(FVector AimInput);
-	virtual void OnInteractAction();
-
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PlayerState")
+	void OnInteractAction();
+	virtual void OnInteractAction_Implementation();
 	
 	virtual void EnterState_Implementation(ACharacter* player);
 	

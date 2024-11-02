@@ -22,6 +22,9 @@ public:
 	
 	UFUNCTION()
 	virtual void OnMoveAction(FVector MoveInput);
+	virtual void OnAimAction(FVector AimInput);
+	virtual void OnInteractAction();
+
 	
 	virtual void EnterState_Implementation(ACharacter* player);
 	

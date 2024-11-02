@@ -20,9 +20,9 @@ void ACustomPlayerController::OnMoveInputAction(const FInputActionValue& Value)
 void ACustomPlayerController::OnAimInputAction(const FInputActionValue& Value)
 {
 	FVector AimInput = Value.Get<FVector>();
-	if (OnMoveInputEvent.IsBound())
+	if (OnAimInputEvent.IsBound())
 	{
-		OnMoveInputEvent.Broadcast(AimInput);
+		OnAimInputEvent.Broadcast(AimInput);
 	}
 }
 

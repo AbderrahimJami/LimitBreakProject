@@ -34,6 +34,9 @@ void ACustomPlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerMappingContext, 0);
 	}
+
+	ClamCameraPitch();
+	
 }
 
 void ACustomPlayerController::SetupInputComponent()
@@ -70,4 +73,12 @@ void ACustomPlayerController::Aim(const FInputActionValue& Value)
 	FVector MouseInput = Value.Get<FVector>();
 	GetPawn()->AddControllerYawInput(MouseInput.X);
 	GetPawn()->AddControllerPitchInput(MouseInput.Y * -1);
+
+}
+
+
+void ACustomPlayerController::ClamCameraPitch() const
+{
+	PlayerCameraManager->ViewPitchMax = CameraPitchLimit;
+	PlayerCameraManager->ViewPitchMin = -CameraPitchLimit;
 }

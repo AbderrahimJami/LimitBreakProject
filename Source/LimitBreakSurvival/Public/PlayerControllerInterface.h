@@ -10,6 +10,7 @@
 //Delegate types declarations
 DECLARE_MULTICAST_DELEGATE_OneParam(FMoveSignature, FVector);
 DECLARE_MULTICAST_DELEGATE_OneParam(FAimSignature, FVector);
+DECLARE_MULTICAST_DELEGATE(FInteractSignature);
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)

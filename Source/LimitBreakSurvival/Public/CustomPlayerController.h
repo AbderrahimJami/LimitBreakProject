@@ -24,6 +24,7 @@ public:
 
 	void OnMoveInputAction(const FInputActionValue& Value);
 	void OnAimInputAction(const FInputActionValue& Value);
+	void OnInteractInputAction(const FInputActionValue& Value);
 	//Delegates
 
 protected:

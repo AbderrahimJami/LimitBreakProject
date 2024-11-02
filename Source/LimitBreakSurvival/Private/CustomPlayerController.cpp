@@ -68,6 +68,11 @@ FAimSignature* ACustomPlayerController::GetAimDelegate()
 	return &OnAimInputEvent;
 }
 
+FInteractSignature* ACustomPlayerController::GetInteractDelegate()
+{
+	return &OnInteractInputEvent;
+}
+
 void ACustomPlayerController::Aim(const FInputActionValue& Value)
 {
 	FVector MouseInput = Value.Get<FVector>();

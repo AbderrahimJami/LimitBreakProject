@@ -26,6 +26,15 @@ void ACustomPlayerController::OnAimInputAction(const FInputActionValue& Value)
 	}
 }
 
+void ACustomPlayerController::OnInteractInputAction(const FInputActionValue& Value)
+{
+	if (OnInteractInputEvent.IsBound())
+	{
+		OnInteractInputEvent.Broadcast();
+	}
+}
+
+
 void ACustomPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -48,12 +57,15 @@ void ACustomPlayerController::SetupInputComponent()
 	{
 		EnhancedInputComponent->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::OnMoveInputAction);
 		EnhancedInputComponent->BindAction(MoveInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnMoveInputAction);
-		
+		//Bind Aim function to AimInputAction
 		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::Aim);
 		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::Aim);
+		//Bind callback function to Broadcast input action event trigger to listening states
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
+		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
 		
-		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
-		EnhancedInputComponent->BindAction(AimInputAction, ETriggerEvent::Completed, this, &ACustomPlayerController::OnAimInputAction);
+		//Bind Interact callback function to InteractInputAction
+		EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::OnInteractInputAction);
 	}
 	
 }

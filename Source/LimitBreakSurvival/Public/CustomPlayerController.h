@@ -40,12 +40,16 @@ protected:
 
 	virtual FAimSignature* GetAimDelegate() override;
 
+	virtual FInteractSignature* GetInteractDelegate() override;
+
 private:
 
 	void Aim(const FInputActionValue& Value);
+	void ClamCameraPitch() const;
+
 	
 	FMoveSignature OnMoveInputEvent;
 	FAimSignature OnAimInputEvent;
-
+	FInteractSignature OnInteractInputEvent;
 	
 };

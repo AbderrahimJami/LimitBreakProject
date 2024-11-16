@@ -8,6 +8,7 @@
 
 #include "PlayerCharacter.generated.h"
 
+class UCameraComponent;
 class UStateManagerComponent;
 class UInputAction;
 class UInputMappingContext;
@@ -35,6 +36,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	const UInputAction* MoveInputAction = nullptr;
 
+	
+	UPROPERTY(Category=Character, EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
+	class USceneComponent* PivotPoint;
+	
+	UPROPERTY(Category=Character, EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
+	class UCameraComponent* Camera;
+
+	
 	void Move(const FInputActionValue& Value);
 	
 public:
@@ -46,15 +55,23 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthComponentBase* HealthComp;
+
+	
 	UPROPERTY(visibleAnywhere, BlueprintReadOnly, Category = Input)
 	FVector2D MoveInput;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Finite State Machine")
 	UStateManagerComponent* StateManager;
-	
+
+	UPROPERTY(BlueprintReadOnly, Category = "Animation Trigger Variables")
+	bool bIsMoving = false;
+
 private:
 	UPlayerStateBase* PlayerState;
 	UIdleState* IdleState;
 	UWalkingState* WalkingState;
+
+
+
 };

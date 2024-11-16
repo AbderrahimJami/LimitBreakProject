@@ -50,6 +50,10 @@ protected:
 
 	virtual FInteractSignature* GetInteractDelegate() override;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Animation Trigger Variables")
+	FVector MouseInput; 
+	
+
 private:
 
 	void Aim(const FInputActionValue& Value);

@@ -62,7 +62,4 @@ private:
 	bool bCanTickState = false;
 	void InitializeStates();
 
-	
-	
-	
 };

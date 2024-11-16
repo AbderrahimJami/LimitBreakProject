@@ -46,9 +46,9 @@ void UIdleState::OnMoveAction(FVector MoveInput)
 	Super::OnMoveAction(MoveInput);
 	//Change state
 	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::MakeRandomColor(), "Move Action from IdleState");
-
+	
 	PlayerCharacterRef->StateManager->SwitchStateByKey("Walk");
-
+	PlayerCharacterRef->bIsMoving = true;
 }
 
 void UIdleState::OnInteractAction_Implementation()

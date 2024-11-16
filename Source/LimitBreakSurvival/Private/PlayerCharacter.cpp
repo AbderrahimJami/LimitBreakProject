@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "HealthComponentBase.h"
 #include "StateManagerComponent.h"
+#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -17,6 +18,24 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	StateManager = CreateDefaultSubobject<UStateManagerComponent>(TEXT("StateManager"));
 	HealthComp = CreateDefaultSubobject<UHealthComponentBase>(TEXT("HealthComp"));
+
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS Camera"));
+	if (Camera)
+	{
+		Camera->SetupAttachment(GetMesh(), "head");
+	}
+
+	
+	//Add Pivot point scene comp
+	PivotPoint = CreateDefaultSubobject<USceneComponent>(TEXT("PivotPoint"));
+	if (PivotPoint)
+	{
+		PivotPoint->SetupAttachment(RootComponent);
+		PivotPoint->SetWorldLocation(Camera->GetComponentLocation());
+		//Make Mesh from ACharacter class a child of the Pivot point in code.. 
+		GetMesh()->SetupAttachment(PivotPoint);
+	}
 }
 
 // Called when the game starts or when spawned

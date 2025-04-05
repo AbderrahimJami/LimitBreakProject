@@ -1,1 +1,53 @@
-Content/** filter=lfs diff=lfs merge=lfs -text
+# Unreal Engine 5 - Git Attributes
+
+# Treat all UE binary assets as binary (no diff/merge)
+*.uasset binary
+*.umap binary
+
+# Optional: mark specific binary formats used by UE
+*.fbx binary
+*.wav binary
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.mov binary
+*.ogg binary
+*.gif binary
+*.usf text
+*.ush text
+
+# C++ and config files - treat as text
+*.cpp text
+*.h text
+*.cs text
+*.ini text
+*.txt text
+*.md text
+*.json text
+*.xml text
+*.csv text
+*.bat text
+*.sh text
+*.py text
+*.uproject text
+*.uplugin text
+
+# Force LF line endings for all text files
+* text=auto eol=lf
+
+# Exclude diffing for binary files that UE creates
+*.pdb binary
+*.exe binary
+*.dll binary
+*.lib binary
+*.app binary
+*.dylib binary
+
+# Git LFS (optional) - if using Git LFS for binary assets
+# Uncomment if you're using LFS
+# *.uasset filter=lfs diff=lfs merge=lfs -text
+# *.umap filter=lfs diff=lfs merge=lfs -text
+
+# Prevent merge conflicts on UE project files
+*.uproject merge=union
+*.uplugin merge=union

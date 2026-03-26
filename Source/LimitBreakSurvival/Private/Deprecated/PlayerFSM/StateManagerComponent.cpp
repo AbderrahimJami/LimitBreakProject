@@ -1,9 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "StateManagerComponent.h"
-
-#include "Evaluation/MovieSceneEvaluationCustomVersion.h"
+#include "Deprecated/PlayerFSM/StateManagerComponent.h"
 #include "GameFramework/Character.h"
 
 

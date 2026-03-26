@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EnemyCharacterBase.h"
+#include "Characters/EnemyCharacterBase.h"
 
 // Sets default values
 AEnemyCharacterBase::AEnemyCharacterBase()

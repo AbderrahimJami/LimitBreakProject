@@ -1,8 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "IdleState.h"
-#include "StateManagerComponent.h"
+
+#include "Deprecated/PlayerFSM/IdleState.h"
+#include "Deprecated/PlayerFSM/StateManagerComponent.h"
 
 void UIdleState::EnterState(ACharacter* player)
 {

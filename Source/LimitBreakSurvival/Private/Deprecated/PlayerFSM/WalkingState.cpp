@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WalkingState.h"
-#include "PlayerCharacter.h"
-#include "StateManagerComponent.h"
+#include "Deprecated/PlayerFSM/WalkingState.h"
+#include "Characters/PlayerCharacter.h"
+#include "Deprecated/PlayerFSM/StateManagerComponent.h"
 
 
 void UWalkingState::EnterState_Implementation(ACharacter* Player)

@@ -37,8 +37,8 @@ void UWalkingState::OnMoveAction(FVector MoveInput)
 	Super::OnMoveAction(MoveInput);
 	if (MoveInput.IsZero())
 	{
-		PlayerCharacterRef->bIsMoving = false;
-		PlayerCharacterRef->StateManager->SwitchStateByKey("Idle");
+		// PlayerCharacterRef->bIsMoving = false;
+		// PlayerCharacterRef->StateManager->SwitchStateByKey("Idle");
 	}
 	PlayerCharacterRef->AddMovementInput(PlayerCharacterRef->GetActorRightVector(), MoveInput.X);
 	PlayerCharacterRef->AddMovementInput(PlayerCharacterRef->GetActorForwardVector(), MoveInput.Y);

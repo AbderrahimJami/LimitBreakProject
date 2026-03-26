@@ -10,6 +10,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Engine/LocalPlayer.h"
 
+// GAS
+#include "AbilitySystemComponent.h"
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,12 @@ APlayerCharacter::APlayerCharacter()
 	// Mesh1P->bCastDynamicShadow = false;
 	// Mesh1P->CastShadow = false;
 	// Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(false);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	
+		
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -71,6 +78,17 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+	
+	
 }
 
 

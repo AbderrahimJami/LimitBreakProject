@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "AbilitySystemInterface.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputComponent;
@@ -17,14 +18,16 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class LIMITBREAKSURVIVAL_API APlayerCharacter : public ACharacter
+class LIMITBREAKSURVIVAL_API APlayerCharacter : public ACharacter, public  IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 	// /** Pawn mesh: 1st person view (arms; seen only by self) */
 	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
 	// USkeletalMeshComponent* Mesh1P;
-
+	
+public:
+	
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
@@ -43,10 +46,13 @@ class LIMITBREAKSURVIVAL_API APlayerCharacter : public ACharacter
 
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* LookAction;
+	UInputAction* LookAction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
+	UAbilitySystemComponent* AbilitySystemComponent;
+
 	
-public:
-	APlayerCharacter();
+APlayerCharacter();
 
 protected:
 	/** Called for movement input */
@@ -55,13 +61,19 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
-protected:
-	// APawn interface
+// APawn interface
 	virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-	// End of APawn interface
+// End of APawn interface
+
+// IAbilitySystemInterface
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent;}
+// End of IAbilitySystemInterface
 
 public:
+	virtual void PossessedBy(AController* NewController) override;
+
+protected:
 	/** Returns Mesh1P subobject **/
 	// USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/

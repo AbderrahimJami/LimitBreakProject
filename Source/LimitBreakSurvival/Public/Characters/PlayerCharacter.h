@@ -8,6 +8,8 @@
 #include "AbilitySystemInterface.h"
 #include "PlayerCharacter.generated.h"
 
+class UStaminaAttributeSet;
+class UHealthAttributeSet;
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
@@ -51,6 +53,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
 	UAbilitySystemComponent* AbilitySystemComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem|Abilities")
+	UHealthAttributeSet* HealthAttributeSet;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem|Abilities")
+	UStaminaAttributeSet* StaminaAttributeSet;
 	
 APlayerCharacter();
 

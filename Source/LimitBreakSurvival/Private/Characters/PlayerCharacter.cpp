@@ -12,6 +12,8 @@
 
 // GAS
 #include "AbilitySystemComponent.h"
+#include "GAS/AttributeSets/HealthAttributeSet.h"
+#include "GAS/AttributeSets/StaminaAttributeSet.h"
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,6 +41,10 @@ APlayerCharacter::APlayerCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(false);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	
+	//AttributeSets
+	HealthAttributeSet = CreateDefaultSubobject<UHealthAttributeSet>(TEXT("HealthAttributeSet"));
+	StaminaAttributeSet = CreateDefaultSubobject<UStaminaAttributeSet>(TEXT("StaminaAttributeSet"));
 	
 		
 }

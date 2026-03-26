@@ -2,3 +2,8 @@
 
 
 #include "GAS/AttributeSets/StaminaAttributeSet.h"
+UStaminaAttributeSet::UStaminaAttributeSet()
+{
+	MaxStamina = 100.0f;
+	Stamina = MaxStamina; 
+}

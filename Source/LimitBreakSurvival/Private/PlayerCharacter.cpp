@@ -1,70 +1,101 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PlayerCharacter.h"
-#include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
-#include "HealthComponentBase.h"
-#include "Components/InputComponent.h"
-#include "HealthComponentBase.h"
-#include "StateManagerComponent.h"
+#include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
+#include "Engine/LocalPlayer.h"
 
-// Sets default values
+DEFINE_LOG_CATEGORY(LogTemplateCharacter);
+
+//////////////////////////////////////////////////////////////////////////
+// APlayerCharacter
+
 APlayerCharacter::APlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	StateManager = CreateDefaultSubobject<UStateManagerComponent>(TEXT("StateManager"));
-	HealthComp = CreateDefaultSubobject<UHealthComponentBase>(TEXT("HealthComp"));
+	// Set size for collision capsule
+	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
+		
+	// Create a CameraComponent	
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
+	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
+	// Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+	// Mesh1P->SetOnlyOwnerSee(true);
+	// Mesh1P->SetupAttachment(FirstPersonCameraComponent);
+	// Mesh1P->bCastDynamicShadow = false;
+	// Mesh1P->CastShadow = false;
+	// Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS Camera"));
-	if (Camera)
-	{
-		Camera->SetupAttachment(GetMesh(), "head");
-	}
-
-	
-	//Add Pivot point scene comp
-	PivotPoint = CreateDefaultSubobject<USceneComponent>(TEXT("PivotPoint"));
-	if (PivotPoint)
-	{
-		PivotPoint->SetupAttachment(RootComponent);
-		PivotPoint->SetWorldLocation(Camera->GetComponentLocation());
-		//Make Mesh from ACharacter class a child of the Pivot point in code.. 
-		GetMesh()->SetupAttachment(PivotPoint);
-	}
 }
 
-// Called when the game starts or when spawned
-void APlayerCharacter::BeginPlay()
+//////////////////////////////////////////////////////////////////////////// Input
+
+void APlayerCharacter::NotifyControllerChanged()
 {
-	Super::BeginPlay();
+	Super::NotifyControllerChanged();
 
-	StateManager->InitStateManager();
-	
+	// Add Input Mapping Context
+	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
 }
+
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{	
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		// Jumping
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		// Moving
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+
+		// Looking
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+	}
+	else
+	{
+		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
-	MoveInput = Value.Get<FVector2D>();
-	
-	
-	
+	// input is a Vector2D
+	const FVector2D MovementVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		// add movement 
+		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+		AddMovementInput(GetActorRightVector(), MovementVector.X);
+	}
 }
 
-// Called every frame
-void APlayerCharacter::Tick(float DeltaTime)
+void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	Super::Tick(DeltaTime);
+	// input is a Vector2D
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		// add yaw and pitch input to controller
+		AddControllerYawInput(LookAxisVector.X);
+		AddControllerPitchInput(LookAxisVector.Y);
+	}
 }
-
-// Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
-

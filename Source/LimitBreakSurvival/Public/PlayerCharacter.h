@@ -1,77 +1,71 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputActionValue.h"
 #include "GameFramework/Character.h"
-
+#include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
 
+class UInputComponent;
+class USkeletalMeshComponent;
 class UCameraComponent;
-class UStateManagerComponent;
 class UInputAction;
 class UInputMappingContext;
-class UHealthComponentBase;
-class UPlayerStateBase;
-class UIdleState;
-class UWalkingState;
+struct FInputActionValue;
 
-UCLASS()
+DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
+
+UCLASS(config=Game)
 class LIMITBREAKSURVIVAL_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	// /** Pawn mesh: 1st person view (arms; seen only by self) */
+	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+	// USkeletalMeshComponent* Mesh1P;
+
+	/** First person camera */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* FirstPersonCameraComponent;
+
+	/** MappingContext */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* DefaultMappingContext;
+
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* JumpAction;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* MoveAction;
+
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* LookAction;
+	
 public:
-	// Sets default values for this character's properties
 	APlayerCharacter();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputMappingContext* PlayerMappingContext = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	const UInputAction* MoveInputAction = nullptr;
-
-	
-	UPROPERTY(Category=Character, EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
-	class USceneComponent* PivotPoint;
-	
-	UPROPERTY(Category=Character, EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
-	class UCameraComponent* Camera;
-
-	
+	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
-	
+
+	/** Called for looking input */
+	void Look(const FInputActionValue& Value);
+
+protected:
+	// APawn interface
+	virtual void NotifyControllerChanged() override;
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	// End of APawn interface
+
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;	
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UPROPERTY(VisibleAnywhere)
-	class UHealthComponentBase* HealthComp;
-
-	
-	UPROPERTY(visibleAnywhere, BlueprintReadOnly, Category = Input)
-	FVector2D MoveInput;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Finite State Machine")
-	UStateManagerComponent* StateManager;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Animation Trigger Variables")
-	bool bIsMoving = false;
-
-private:
-	UPlayerStateBase* PlayerState;
-	UIdleState* IdleState;
-	UWalkingState* WalkingState;
-
-
+	/** Returns Mesh1P subobject **/
+	// USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	/** Returns FirstPersonCameraComponent subobject **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 };
+

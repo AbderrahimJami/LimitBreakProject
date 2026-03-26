@@ -22,7 +22,7 @@ public:
 	Increases current health, up to the maximum health limit 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Health")
-	void Heal(float healAmount = 10.f);
+	void Heal(float HealAmount = 10.f);
 	
 	
 	UFUNCTION(Blueprintable, Category = "Health")
@@ -33,7 +33,7 @@ public:
 	triggering death if health reaches zero.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Damage Handling")
-	void TakeDamage(float damageAmount = 10);
+	void TakeDamage(float DamageAmount = 10);
 
 	/*
 	Applies gradual damage over a set duration
@@ -90,12 +90,12 @@ public:
 	FOnRevive OnRevive;
 	
 private:
-	bool isDead = false;
-	FTimerDelegate healthTimerDelegate;
-	FTimerHandle healthTimer;
+	bool bIsDead = false;
+	FTimerDelegate HealthTimerDelegate;
+	FTimerHandle HealthTimer;
 
-	FTimerDelegate damageTimerDelegate;
-	FTimerHandle damageTimer;
+	FTimerDelegate DamageTimerDelegate;
+	FTimerHandle DamageTimer;
 
 	
 	

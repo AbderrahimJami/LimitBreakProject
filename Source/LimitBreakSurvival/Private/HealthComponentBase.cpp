@@ -21,10 +21,10 @@ UHealthComponentBase::UHealthComponentBase()
 	// ...
 }
 
-void UHealthComponentBase::Heal(float healAmount)
+void UHealthComponentBase::Heal(float HealAmount)
 {
 	if (CurrentHealth == MaxHealth) return;
-	CurrentHealth += healAmount;
+	CurrentHealth += HealAmount;
 	if (CurrentHealth > MaxHealth)
 		CurrentHealth = MaxHealth;
 	//Broadcast Health Change
@@ -35,24 +35,24 @@ void UHealthComponentBase::Heal(float healAmount)
 
 bool UHealthComponentBase::IsDead() const
 {
-	return isDead;
+	return bIsDead;
 }
 
-void UHealthComponentBase::TakeDamage(float damageAmount)
+void UHealthComponentBase::TakeDamage(float DamageAmount)
 {
 	
-	CurrentHealth -= damageAmount;
+	CurrentHealth -= DamageAmount;
 	//Check if there's an active timer 
 	if (CurrentHealth <= 0)
 	{
-		isDead = true;
+		bIsDead = true;
 		//Letting rest of the code know the Owning Actor's dead now 
 		OnDeath.Broadcast();
 
 		//Check if there's damage is being applied over time
-		if (damageTimer.IsValid())
+		if (DamageTimer.IsValid())
 		{
-			GetWorld()->GetTimerManager().ClearTimer(damageTimer);
+			GetWorld()->GetTimerManager().ClearTimer(DamageTimer);
 		}
 	}
 	//Letting code know health changed
@@ -62,12 +62,12 @@ void UHealthComponentBase::TakeDamage(float damageAmount)
 
 void UHealthComponentBase::ApplyHealthOverTime(float HealthPerSecond, float Duration)
 {
-	healthTimerDelegate.BindUFunction(this, FName("Heal"), HealthPerSecond);
+	HealthTimerDelegate.BindUFunction(this, FName("Heal"), HealthPerSecond);
 	FTimerHandle durationTimer;
-	GetWorld()->GetTimerManager().SetTimer(healthTimer, healthTimerDelegate, 1.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(HealthTimer, HealthTimerDelegate, 1.0f, true);
 	GetWorld()->GetTimerManager().SetTimer(durationTimer, FTimerDelegate::CreateLambda([&]
 	{
-		GetWorld()->GetTimerManager().ClearTimer(healthTimer);
+		GetWorld()->GetTimerManager().ClearTimer(HealthTimer);
 
 	}), Duration, false);
 	
@@ -75,12 +75,12 @@ void UHealthComponentBase::ApplyHealthOverTime(float HealthPerSecond, float Dura
 
 void UHealthComponentBase::ApplyDamageOverTime(float DamagePerSecond, float Duration)
 {
-	damageTimerDelegate.BindUFunction(this, FName("TakeDamage"), DamagePerSecond);
+	DamageTimerDelegate.BindUFunction(this, FName("TakeDamage"), DamagePerSecond);
 	FTimerHandle durationTimer;
-	GetWorld()->GetTimerManager().SetTimer(damageTimer, damageTimerDelegate, 1.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(DamageTimer, DamageTimerDelegate, 1.0f, true);
 	GetWorld()->GetTimerManager().SetTimer(durationTimer, FTimerDelegate::CreateLambda([&]
 	{
-		GetWorld()->GetTimerManager().ClearTimer(damageTimer);
+		GetWorld()->GetTimerManager().ClearTimer(DamageTimer);
 	}), Duration, false);
 
 	
